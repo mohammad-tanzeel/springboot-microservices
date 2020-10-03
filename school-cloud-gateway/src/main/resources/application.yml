@@ -1,0 +1,33 @@
+server:
+  port: 8085
+  
+logging:
+  file: logs/application-debug.log
+  pattern:
+    console: "%d %-5level %logger : %msg%n"
+    file: "%d %-5level [%thread] %logger : %msg%n"
+  level:
+    org.springframework.web: ERROR
+    com.howtodoinjava: DEBUG
+    org.hibernate: ERROR
+        
+eureka:
+  client: 
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: userModule
+        uri: http://localhost:8083/
+        predicates:
+        - Path=/user/**
+      - id: admincrudModule
+        uri: http://localhost:8084/
+        predicates:
+        - Path=/admin/**
+    application:
+      name: school-gateway-service
+      
